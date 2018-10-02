@@ -66,7 +66,7 @@ app.get('/api/pinatas/:id/hit', (req, res) => {
     emitter.emit('hit', pinataService.hitPinata(id));
     if(result === -1) return res.status(404).send("Pinata not found");
     if(result === 423) return res.status(423).send("Hit limit reached!");
-    if(result == 204) return res.status(204).send("You hit it!");
+    if(result == 204) return res.status(204).send();
     return res.json(result);
 });
 
