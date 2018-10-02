@@ -1,5 +1,5 @@
 const offers = require('../data/data').offers;
-const candiesService = require('./candiesService');
+const candyService = require('./candyService');
 
 const offersService = () => {
 
@@ -9,7 +9,7 @@ const offersService = () => {
         retOffers.forEach(element => {
             element.candies.forEach( (x, index) => {
                console.log(index);
-                element.candies[index] = candiesService.getCandyById(x);
+                element.candies[index] = candyService.getCandyById(x);
             })
         });
         return retOffers;
