@@ -1,5 +1,5 @@
 const wholePinatas = require('../data/data').pinatas;
-
+const HitEmmiter = require('../HitEmitter');
 const pinataService = () => {
 
     let pinatas = JSON.parse(JSON.stringify(wholePinatas))
@@ -26,21 +26,15 @@ const pinataService = () => {
         return pinata;
     }
 
-    const hitPinata = id => {
-        const surprise = wholePinatas.filter(p => p.id == id)[0].surprise;
-        const pinata = getPinataById(id);
-        if(pinata === -1 ) return -1;
-        if(pinata.maximumHits == pinata.currentHits) return 423;
-        pinata.currentHits++;
-        if(pinata.currentHits == pinata.maximumHits) return surprise;
-        return 204;
+    const getSurpriseForPinataById = id => {
+        return wholePinatas.filter(p => p.id == id)[0].surprise;
     }
 
     return {
         getAllPinatas,
         getPinataById,
         createPinata,
-        hitPinata
+        getSurpriseForPinataById
     };
 }
 

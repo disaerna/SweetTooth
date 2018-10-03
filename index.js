@@ -4,14 +4,7 @@ const port = 5500;
 const candyService = require('./services/candyService');
 const offerService = require('./services/offerService');
 const pinataService = require('./services/pinataService');
-const HitEmitter = require('./HitEmitter');
-
-const emitter = new HitEmitter();
-
-let result = "";
-emitter.on('hit', (response) => {
-    result = response;
-})
+const HitEmmiter = require('./HitEmitter');
 
 const app = express();
 
@@ -63,11 +56,22 @@ app.post('/api/pinatas', (req, res) => {
 
 app.get('/api/pinatas/:id/hit', (req, res) => {
     const { id } = req.params;
-    emitter.emit('hit', pinataService.hitPinata(id));
-    if(result === -1) return res.status(404).send("Pinata not found");
-    if(result === 423) return res.status(423).send("Hit limit reached!");
-    if(result == 204) return res.status(204).send();
-    return res.json(result);
+    const emitter = new HitEmmiter();
+    emitter.on('Not found', () => {
+        return res.status(404).send("Not found");
+    });
+    emitter.on('Locked', () => {
+        return res.status(423).send("Locked");
+    });
+    emitter.on('Surprise', () => {
+        const surprise = pinataService.getSurpriseForPinataById(id);
+        return res.json(surprise);
+    });
+    emitter.on('No content', () => {
+        return res.status(204).send();
+    })
+
+    emitter.checkHit(pinataService.getPinataById(id));
 });
 
 
