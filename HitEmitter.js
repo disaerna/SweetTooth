@@ -1,7 +1,6 @@
 const EventEmitter = require('events');
 class HitEmitter extends EventEmitter {
     checkHit(pinata){
-        console.log(pinata);
         if(pinata === -1 ) {
             this.emit("Not found");
         }

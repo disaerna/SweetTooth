@@ -54,8 +54,9 @@ app.post('/api/pinatas', (req, res) => {
     return res.status(201).json(result);
 });
 
-app.get('/api/pinatas/:id/hit', (req, res) => {
+app.patch('/api/pinatas/:id/hit', (req, res) => {
     const { id } = req.params;
+    // Event emitter that handles multiple responses
     const emitter = new HitEmmiter();
     emitter.on('Not found', () => {
         return res.status(404).send("Not found");
